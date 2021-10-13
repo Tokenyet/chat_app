@@ -46,15 +46,22 @@ export default function Chat({
 
   // Update chatter for handy
   React.useEffect(() => {
-    const chatter = chatState.getChatterById(currentPageId ?? '');
-    setChatter(chatter);
+    // const chatter = chatState.getChatterById(currentPageId ?? '');
+    // setChatter(chatter);
 
     // Padding messages when the message is not enough
     const msgs = chatState.realtimeMsgs.get(currentPageId!);
     if (msgs == null || msgs.length < 10) {
       chatBloc.add(new FetchHistoryEvent({ id: currentPageId! }));
     }
-  }, [currentPageId, chatState]);
+  }, [currentPageId]);
+
+  // Update chatter
+  React.useEffect(() => {
+    const chatter = chatState.getChatterById(currentPageId ?? '');
+    setChatter(chatter);
+  }, [chatState]);
+
 
   // Change page, clear type messages
   React.useEffect(() => {
@@ -251,6 +258,7 @@ function ChatLoader({
   chatState: ChatState;
   onLoad: () => void;
 }) {
+  console.log(chatter);
   if (chatter == null || chatter.hasReachedMax) return <div />;
 
   if (chatState.status === FormzStatus.submissionInProgress)

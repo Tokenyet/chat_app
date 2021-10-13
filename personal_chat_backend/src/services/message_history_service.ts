@@ -68,7 +68,7 @@ export async function createMessageToHistory(
   userB: ObjectId,
   message: Message
 ) {
-  await MessageHistoryModel.findOneAndUpdate(
+  let msgHistory = await MessageHistoryModel.findOneAndUpdate(
     {
       pairs: {
         $all: [userA, userB],
@@ -87,4 +87,11 @@ export async function createMessageToHistory(
       sort: 'history.createdAt',
     }
   ).exec();
+
+  if(msgHistory == null) {
+    msgHistory = new MessageHistoryModel();
+    msgHistory.pairs = [userA, userB];
+    msgHistory.history = [message];
+    await msgHistory.save();
+  }
 }

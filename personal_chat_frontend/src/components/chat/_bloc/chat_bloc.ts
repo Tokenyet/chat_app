@@ -243,7 +243,10 @@ export class ChatBloc extends Bloc<ChatEvent, ChatState> {
             : new Date(),
         chatterId: event.id,
       });
-      if (historyMsgs.length < 15) targetChatter.hasReachedMax = true;
+      if (historyMsgs.length < 15) {
+        console.log('target chatter = true');
+        targetChatter.hasReachedMax = true;
+      }
       for (const msg of historyMsgs) {
         chatterMsgs.push(msg);
       }
@@ -266,17 +269,36 @@ export class ChatBloc extends Bloc<ChatEvent, ChatState> {
   ): AsyncIterableIterator<ChatState> {
     const currentState = this.state;
     const room = event.room;
+    
+    const chattersMap = currentState.chatters.reduce<Map<string, ChatMessage>>((map, obj) => {
+      map.set(obj.chatterId, obj);
+      return map;
+    }, new Map<string, ChatMessage>())
+
+    console.log('roomMap');
+    console.log(chattersMap);
 
     const chatters = room.audiences.map((aud) => {
-      return new ChatMessage({
-        chatterId: aud.user._id,
-        name: aud.user.name,
-        isOnline: false,
-        latestMessage: aud.latestMessage,
-        picture: aud.user.picture,
-        unreadCount: aud.unreadCount,
-        hasReachedMax: false,
-      });
+      const existedChatter = chattersMap.get(aud.user._id);
+      if(existedChatter) {
+        return existedChatter.copyWith({
+          chatterId: aud.user._id,
+          name: aud.user.name,
+          latestMessage: aud.latestMessage,
+          picture: aud.user.picture,
+          unreadCount: aud.unreadCount,
+        })
+      } else {
+        return new ChatMessage({
+          chatterId: aud.user._id,
+          name: aud.user.name,
+          isOnline: false,
+          latestMessage: aud.latestMessage,
+          picture: aud.user.picture,
+          unreadCount: aud.unreadCount,
+          hasReachedMax: false,
+        });
+      }
     });
 
     yield currentState.copyWith({

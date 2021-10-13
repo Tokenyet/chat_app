@@ -17,7 +17,7 @@ export const postLogin = async (req: Request, res: Response) => {
 
   if (user == null) res.status(404).send('User not found!');
 
-  if (!user!.validPassword(password)) res.status(406).send('Password error!');
+  if (!user!.validPassword(password)) return res.status(406).send('Password error!');
 
   return res.status(200).json(user!.toAuthJson());
 };

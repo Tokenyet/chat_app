@@ -13,8 +13,8 @@ import { RepoContext, Repositories } from '@tokenyet/react-bloc';
 import UserRepository from '../src/repositories/user_repository';
 
 // Comment out for debugging
-// import { Bloc } from '@tokenyet/bloc';
-// import { DebugBlocObserver } from '../src/utility/bloc_observable';
+import { Bloc } from '@tokenyet/bloc';
+import { DebugBlocObserver } from '../src/utility/bloc_observable';
 
 export const cache = createCache({ key: 'css', prepend: true });
 
@@ -31,7 +31,7 @@ export default function MyApp(props: AppProps) {
     if (Ccookie.get('TOKEN')) socketRepo.connect(); // Try to connect by default
 
     // Comment out for debugging
-    // Bloc.observer = new DebugBlocObserver();
+    Bloc.observer = new DebugBlocObserver();
   }, []);
 
   return (
