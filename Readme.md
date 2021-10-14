@@ -3,6 +3,7 @@
 ## Dependencies
 
 This project is for learning purpose, the learning stack consist of...
+
 - [socket.io](https://socket.io/): The connection framework for client/server.
 - [typegoose](https://typegoose.github.io/typegoose): Mongoose with more Typescript styles/feature.
 - [express](https://expressjs.com/): Why do the chat app need express? For login/signup and history fetching.
@@ -26,6 +27,8 @@ Take a glance at the [demo](https://youtu.be/GSzNmPDWv-U) to realize this projec
 ## How to use
 
 ```
+// Mongo server should be started first.
+mongod
 npm install
 
 // Development

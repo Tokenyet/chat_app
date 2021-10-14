@@ -244,7 +244,6 @@ export class ChatBloc extends Bloc<ChatEvent, ChatState> {
         chatterId: event.id,
       });
       if (historyMsgs.length < 15) {
-        console.log('target chatter = true');
         targetChatter.hasReachedMax = true;
       }
       for (const msg of historyMsgs) {
@@ -274,9 +273,6 @@ export class ChatBloc extends Bloc<ChatEvent, ChatState> {
       map.set(obj.chatterId, obj);
       return map;
     }, new Map<string, ChatMessage>())
-
-    console.log('roomMap');
-    console.log(chattersMap);
 
     const chatters = room.audiences.map((aud) => {
       const existedChatter = chattersMap.get(aud.user._id);

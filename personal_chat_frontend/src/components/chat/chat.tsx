@@ -258,7 +258,6 @@ function ChatLoader({
   chatState: ChatState;
   onLoad: () => void;
 }) {
-  console.log(chatter);
   if (chatter == null || chatter.hasReachedMax) return <div />;
 
   if (chatState.status === FormzStatus.submissionInProgress)
